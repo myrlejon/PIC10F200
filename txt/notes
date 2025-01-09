@@ -1,0 +1,6 @@
+blink led
+
+workflow -
+-enable GP1 (ICSPCLK) as GPIO
+should MOVLW (move literal to W) be used?
+ALU > W Reg
