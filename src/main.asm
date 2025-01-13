@@ -1,8 +1,8 @@
 processor 10F200
 
-CONFIG
+; CONFIG
 
-
+;;; - triple ;;; = my own comments
 
 ;;;;;;;;;;;;;;;
 
@@ -18,17 +18,24 @@ CONFIG  MCLRE = OFF           ; GP3/MCLR Pin Function Select bit (GP3/MCLR pin f
 
 ; User guide chapter 4.2: delta means 2 bytes per memory address (14 bit opcodes for PIC12F683)
 ; this psect just holds the reset vector
+;;; PIC10F200 has 12 bit opcodes, should still be 2 bytes per memory address
+
 psect rstVector, delta=2
 reset_vector:
     goto main
 
 psect code, delta=2
 main:
+    ;;; Timer0 Clock Source Select (page 16) bit gets cleared in OPTION_REG (page 23)
     ; clear T0CS bit of OPTION reg to enable it as a GPIO
     movlw       0b11010001
+    ;;; load option register (page 46)
     option      
     ; init gpio
-    movlw       0b111000 ; 0, 1, and 2 are outputs
+    ;;; (page 33 in PIC12F683) indicates that GPIO is an 6-bit wide, bidirectional port.
+    ;;; (page 20 in PIC10F200) indicates that GPIO is an 8-bit I/O register where only the lower 4 bits are used.
+    ;;; change from 0b111000 > 0b00000000 (weak pull up is always on so pulling low will enable?).
+    movlw       0b00000000 ; 0, 1, and 2 are outputs
     tris        GPIO
     goto        main_loop
 

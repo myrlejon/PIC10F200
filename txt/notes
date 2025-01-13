@@ -1,6 +1,10 @@
-blink led
+- turn on led -
 
 workflow -
--enable GP1 (ICSPCLK) as GPIO
+-enable GP0 (ICSPDAT) as GPIO
 should MOVLW (move literal to W) be used?
 ALU > W Reg
+
+---
+
+PIC10F200 uses Harvard architecture (instead of Von Neumann) - page 6
