@@ -41,33 +41,37 @@ main:
 
 main_loop:
     bsf         GPIO, 1
-    call        delay
+    call        delay_255
     bcf         GPIO, 1
-    call        delay
+    call        delay_255
     goto        main_loop
 
-delay:
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
+delay_255:
+    movlw       0xFF    ;255
+    movwf       0x10    ;general purpose register (RAM)
+    call        delay_loop
     retlw       0
 
+delay_loop:
+    decfsz      0x10, 1
+    goto        delay_loop
+    retlw       0
+
+; delay:
+;     nop
+;     nop
+;     nop
+;     nop
+;     nop
+;     nop
+;     nop
+;     retlw       0
 
 ; TODO - make a loop that does the following -
 ; MOVLW - move literal to W - for example this could be 100
 ; MOVWF - move W to f - in this case it will be put in general RAM register
 ; DECFSZ - decrement, skip if 0 - once it hits 0 then it should have a GOTO to delay_end
 ; GOTO delay_end:
-
-MOVWF
-
-DECFSZ
-efter...
-GOTO delay_end
 
 ; need to specify END directive to fix warning: "warning: (528) no start record; entry point defaults to zero"
 end reset_vector
