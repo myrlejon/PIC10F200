@@ -39,23 +39,55 @@ main:
     tris        GPIO
     goto        main_loop
 
+    ; general purpose registers 0x10 - 0x1Fh
+
 main_loop:
     bsf         GPIO, 1
-    call        delay_255
+
+    movlw       0xFF   ;255
+    movwf       0x10   ;load value into general purpose register (RAM)
+    movlw       0xFF
+    movwf       0x11
+
+    call        outer_loop
+
     bcf         GPIO, 1
-    call        delay_255
+
+    movlw       0xFF
+    movwf       0x10
+    movlw       0xFF
+    movwf       0x11
+
+    call        outer_loop
+    
     goto        main_loop
 
-delay_255:
-    movlw       0xFF    ;255
-    movwf       0x10    ;general purpose register (RAM)
-    call        delay_loop
+
+outer_loop:
+    call        inner_loop
+    decfsz      0x10, 1
+    goto        outer_loop
     retlw       0
 
-delay_loop:
-    decfsz      0x10, 1
-    goto        delay_loop
+inner_loop:
+    nop
+    nop
+    nop
+    nop
+    nop
+    decfsz      0x11, 1
+    goto        inner_loop
     retlw       0
+
+
+; delay:
+;     movlw       0xFF   ;255
+;     movwf       0x10   ;load value into general purpose register (RAM)
+;     movlw       0xFF
+;     movwf       0x11
+
+;     call        outer_loop
+;     retlw       0
 
 ; delay:
 ;     nop
