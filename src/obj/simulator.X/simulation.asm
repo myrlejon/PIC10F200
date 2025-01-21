@@ -16,8 +16,6 @@ CONFIG  OSC = IntRC           ; Oscillator Selection bits (internal RC oscillato
 CONFIG  CP = OFF              ; Code Protection bit (Code protection off)
 CONFIG  MCLRE = OFF           ; GP3/MCLR Pin Function Select bit (GP3/MCLR pin function is MCLR)
 
-
-
 ; User guide chapter 4.2: delta means 2 bytes per memory address (14 bit opcodes for PIC12F683)
 ; this psect just holds the reset vector
 ;;; PIC10F200 has 12 bit opcodes, should still be 2 bytes per memory address
@@ -39,15 +37,12 @@ main:
     ;;; change from 0b111000 > 0b00000000 (weak pull up is always on so pulling low will enable?).
     movlw       0b01000000 ; 0, 1, and 2 are outputs
     tris        GPIO
-
-
     goto        main_loop
-
 
     ; general purpose registers 0x10 - 0x1Fh
 
 main_loop:
-    bcf         GPIO, 1
+    bsf         GPIO, 1
 
     movlw       0xFF   ;255
     movwf       0x10   ;load value into general purpose register (RAM)
@@ -56,10 +51,7 @@ main_loop:
 
     call        outer_loop
 
-    ; code gets stuck in loop and does not return, why?
-
-
-    bsf         GPIO, 1
+    bcf         GPIO, 1
 
     movlw       0xFF
     movwf       0x10
@@ -73,33 +65,14 @@ main_loop:
 
 outer_loop:
     call        inner_loop
-
     decfsz      0x10, 1
     goto        outer_loop
     retlw       0
 
 inner_loop:
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-
     decfsz      0x11, 1
     goto        inner_loop
-
-    movlw       0xFF    ;refill value
-    movwf       0x11
-
     retlw       0
-
-loop_end:
-    nop
 
 
 ; delay:
@@ -129,3 +102,5 @@ loop_end:
 
 ; need to specify END directive to fix warning: "warning: (528) no start record; entry point defaults to zero"
 end reset_vector
+
+

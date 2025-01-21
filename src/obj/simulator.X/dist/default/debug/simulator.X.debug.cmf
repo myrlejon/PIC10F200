@@ -1,0 +1,199 @@
+%CMF
+# %PSECTS Section
+# For each object file, details of its psects are enumerated here.
+# The begining of the section is indicated by %PSECTS.  The first
+# line indicates the name of the first object file, e.g.
+#    $foo.obj
+# Each line that follows describes a psect in that object file, until
+# the next object file.  The lines that describe a psect have the
+# format:
+#    <psect name> <class name> <space> <link address> <load addresses> <length> <delta> <reloc>
+# All addresses and the length are given in unqualified hexadecimal
+# in delta units.  Any other numeric values are decimal.
+%PSECTS
+$build/default/debug/simulation.o
+code CODE 0 2 2 19 2 1
+rstVector - 0 0 0 1 2 1
+config CONFIG 4 FFF FFF 1 2 1
+$C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+reset_vec CODE 0 FF FF 1 2 1
+end_init ENTRY 0 0 0 2 2 1
+config CONFIG 4 FFF FFF 1 2 1
+# %UNUSED Section
+# This section enumerates the unused ranges of each CLASS. Each entry
+# is described on a single line as follows:
+#    <class name> <range> <delta>
+# Addresses given in the range are in hexadecimal and units of delta.
+%UNUSED
+RAM 10-1D 1
+BANK0 10-1D 1
+ENTRY 1B-FE 2
+IDLOC 100-103 2
+CODE 1B-FE 2
+SFR0 0-F 1
+COMMON 1C-1F 1
+STRCODE 1B-FE 2
+STRING 1B-FE 2
+# %LINETAB Section
+# This section enumerates the file/line to address mappings.
+# The beginning of the section is indicated by %LINETAB.
+# The first line indicates the name of the first object file, e.g.
+#   $foo.obj
+# Each line that follows describes a single mapping until the next
+# object file.  Mappings have the following format:
+#    <address> <psect name> <class name> ><line number>:<file name>
+# The address is absolute and given given in unqualified hex 
+# in delta units of the psect. All mappings within an object file
+# are in ascending order of addresses.
+# All other numeric values are in decimal.
+%LINETAB
+$build/default/debug/simulation.o
+0 rstVector ABS >25:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+2 code CODE >31:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+3 code CODE >33:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+4 code CODE >38:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+5 code CODE >39:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+6 code CODE >40:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+7 code CODE >45:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+8 code CODE >47:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+9 code CODE >48:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+A code CODE >49:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+B code CODE >50:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+C code CODE >52:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+D code CODE >54:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+E code CODE >56:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+F code CODE >57:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+10 code CODE >58:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+11 code CODE >59:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+12 code CODE >61:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+13 code CODE >63:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+14 code CODE >67:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+15 code CODE >68:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+16 code CODE >69:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+17 code CODE >70:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+18 code CODE >73:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+19 code CODE >74:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+1A code CODE >75:C:\dev\PIC10F200\src\obj\simulator.X\simulation.asm
+# %SYMTAB Section
+# An enumeration of all symbols in the program.
+# The beginning of the section is indicated by %SYMTAB.
+# Each line describes a single symbol as follows:
+#    <label> <value> [-]<load-adj> <class> <space> <psect> <file-name>
+# The value and load-adj are both in unqualified hexadecimal.
+# All other numeric values are in decimal.  The load-adj is the
+# quantity one needs to add to the symbol value in order to obtain the load
+# address of the symbol.  This value may be signed. If the symbol
+# was defined in a psect then <psect> will be "-". File-name
+# is the name of the object file in which the symbol was defined.
+%SYMTAB
+__Hspace_0 100 0 ABS 0 - -
+__Hspace_1 0 0 ABS 0 - -
+__Hspace_2 0 0 ABS 0 - -
+__Hspace_4 1FFF 0 ABS 0 - -
+__Hudata_bank0 2 0 ABS 0 udata_bank0 -
+__L__absolute__ 0 0 ABS 0 __absolute__ -
+__Hstrings 0 0 STRING 0 strings -
+___sp 0 0 STACK 2 stack C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+_main 0 0 ABS 0 - C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+___stack_hi 0 0 STACK 2 stack C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+___stack_lo 0 0 STACK 2 stack C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+start 0 0 ENTRY 0 init C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+__Hpowerup 0 0 CODE 0 powerup -
+__Hfunctab 0 0 ENTRY 0 functab -
+__Hclrtext 4 0 ENTRY 0 clrtext -
+__Lmaintext 0 0 ABS 0 maintext -
+___stackhi 0 0 ABS 0 - C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+___stacklo 0 0 ABS 0 - C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+__Hjmp_tab 0 0 ABS 0 jmp_tab -
+start_initialization 0 0 ABS 0 - C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+___int_sp 0 0 STACK 2 stack C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+__Hbank0 0 0 ABS 0 bank0 -
+__Hcinit 4 0 ENTRY 0 cinit -
+__Hstack 0 0 STACK 2 stack -
+__Hudata 2 0 ABS 0 udata -
+__Hmaintext 0 0 ABS 0 maintext -
+__Hcommon 0 0 ABS 0 common -
+__Hconfig 2000 0 CONFIG 4 config -
+__Lbank0 0 0 ABS 0 bank0 -
+__Lcinit 4 0 ENTRY 0 cinit -
+__Lstack 0 0 STACK 2 stack -
+__Ludata 2 0 ABS 0 udata -
+__Habs1 0 0 ABS 0 abs1 -
+__Hcode 0 0 ABS 0 code -
+__Hdata 2 0 ABS 0 data -
+__Hheap 0 0 HEAP 7 heap -
+__Hinit 0 0 ENTRY 0 init -
+__Hsfr0 0 0 ABS 0 sfr0 -
+__Htext 0 0 ABS 0 text -
+__Labs1 0 0 ABS 0 abs1 -
+__Lcode 0 0 ABS 0 code -
+__Ldata 2 0 ABS 0 data -
+__Lheap 0 0 HEAP 7 heap -
+__Linit 0 0 ENTRY 0 init -
+__Lsfr0 0 0 ABS 0 sfr0 -
+__Ltext 0 0 ABS 0 text -
+__S0 1B 0 ABS 0 - -
+__S1 0 0 ABS 0 - -
+reset_vec 1FE 0 CODE 0 reset_vec C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+__Lcommon 0 0 ABS 0 common -
+__Lconfig 0 0 CONFIG 4 config -
+__Lspace_0 0 0 ABS 0 - -
+__Lspace_1 0 0 ABS 0 - -
+__Lspace_2 0 0 ABS 0 - -
+__Lspace_4 0 0 ABS 0 - -
+__Lend_init 0 0 ENTRY 0 end_init -
+__Lstrings 0 0 STRING 0 strings -
+__Hreset_vec 200 0 CODE 0 reset_vec -
+__Lpowerup 0 0 CODE 0 powerup -
+__Ludata_bank0 2 0 ABS 0 udata_bank0 -
+__H__absolute__ 0 0 ABS 0 __absolute__ -
+__Lreset_vec 1FE 0 CODE 0 reset_vec -
+___heap_hi 0 0 ABS 0 - C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+___heap_lo 0 0 ABS 0 - C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+__HrstVector 2 0 ABS 0 rstVector -
+__Lfunctab 0 0 ENTRY 0 functab -
+__Lclrtext 4 0 ENTRY 0 clrtext -
+__Hreset_wrap 0 0 ENTRY 0 reset_wrap -
+__Hend_init 4 0 ENTRY 0 end_init -
+__LrstVector 0 0 ABS 0 rstVector -
+__Hram 0 0 ABS 0 ram -
+__Lram 0 0 ABS 0 ram -
+__Ljmp_tab 0 0 ABS 0 jmp_tab -
+__Lreset_wrap 0 0 ENTRY 0 reset_wrap -
+___int_stack_hi 0 0 STACK 2 stack C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+___int_stack_lo 0 0 STACK 2 stack C:\Users\nisse\AppData\Local\Temp\xcAs320.\driver_tmp_6.o
+# %SPLITSTAB Section
+# This section enumerates all the psect splits performed by the assembler.
+# The beginning of the section is indicated by %SPLITSTAB.
+# Each line is a record a particular split, where the parent psect is on
+# the left and the child on the right.  Note that a child psect is always
+# split form the top of the parent psect. All splits from a given parent
+# are listed in the order in which they occurred.
+%SPLITSTAB
+# %DABS Section
+# This section contains a table of all usuage of the assember
+# directive DABS in the program. Each line has the following format:
+#   <name> <space> <address> <size>
+# If the DABS was originally labelled then that shall be <name>,
+# otherwise name will be "-".  The <space> number is in decimal.
+# <address> and <size> are in byte units as unqaulified hexadecimal
+%DABS
+# %SEGMENTS Section
+# This sections enumerates the segments of the program.  Each segment
+# is described on a single line as follows:
+#    <name> <space> <link address> <file address> <size> <delta>
+# Addresses and size are in unqualified hexadecimal.  The link address
+# and size are in units of delta. The file address is in units of bytes.
+# All other numeric quantities are in decimal.
+%SEGMENTS
+code 0 2 4 19 2
+reset_wrap 0 0 0 2 2
+reset_vec 0 FF 1FE 1 2
+# %NOTES Section
+# This section contains data of all the note-psects.  The beginning of the section
+# is indicated by %NOTES. The first line indicates the name and decimal
+# byte-length of the first note-psect, e.g.
+#   $codecov_info_hdr 16
+# Each line that follows contains the byte-data of the psect in hexadecimal as a
+# space-separated list. These lines are limited to 16 bytes of data.
+%NOTES
