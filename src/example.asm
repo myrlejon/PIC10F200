@@ -47,56 +47,114 @@ main:
     ; general purpose registers 0x10 - 0x1Fh
 
 main_loop:
-    bcf         GPIO, 1
+    goto        outer_loop_init_a
 
+
+outer_loop_init_a:
     movlw       0xFF   ;255
     movwf       0x10   ;load value into general purpose register (RAM)
     movlw       0xFF
     movwf       0x11
 
-    call        outer_loop
+    goto        outer_loop_a
 
-    ; code gets stuck in loop and does not return, why?
-
+outer_loop_a:
+    decfsz      0x11, 1
+    call        inner_loop_a
 
     bsf         GPIO, 1
-
-    movlw       0xFF
-    movwf       0x10
-    movlw       0xFF
-    movwf       0x11
-
-    call        outer_loop
-
-    goto        main_loop
+    goto        outer_loop_init_b
 
 
-outer_loop:
-    call        inner_loop
+inner_loop_a:
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
 
     decfsz      0x10, 1
-    goto        outer_loop
-    retlw       0
-
-inner_loop:
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-
-    decfsz      0x11, 1
-    goto        inner_loop
+    goto        outer_loop_test_a
 
     movlw       0xFF    ;refill value
     movwf       0x11
 
     retlw       0
+
+outer_loop_test_a:
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
+    decfsz      0x10, 1
+    goto        outer_loop_test_a
+    goto        inner_loop_a
+
+;;;
+
+outer_loop_init_b:
+    movlw       0xFF   ;255
+    movwf       0x10   ;load value into general purpose register (RAM)
+    movlw       0xFF
+    movwf       0x11
+
+    goto        outer_loop_b
+
+outer_loop_b:
+    decfsz      0x11, 1
+    call        inner_loop_b
+
+    bcf         GPIO, 1
+    goto        outer_loop_init_a
+
+
+inner_loop_b:
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
+    decfsz      0x10, 1
+    goto        outer_loop_test_b
+
+    movlw       0xFF    ;refill value
+    movwf       0x11
+
+    retlw       0
+
+outer_loop_test_b:
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
+    decfsz      0x10, 1
+    goto        outer_loop_test_b
+    goto        inner_loop_b
 
 loop_end:
     nop
