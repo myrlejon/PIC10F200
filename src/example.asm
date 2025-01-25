@@ -40,7 +40,6 @@ main:
     movlw       0b01000000 ; 0, 1, and 2 are outputs
     tris        GPIO
 
-
     goto        main_loop
 
 
@@ -48,58 +47,30 @@ main:
 
 main_loop:
     bcf         GPIO, 1
+    goto        delay
+    ; bsf         GPIO, 1
+    ; call        delay
+    ; goto        main_loop
 
-    movlw       0xFF   ;255
-    movwf       0x10   ;load value into general purpose register (RAM)
+
+delay:
+    clrf        0x18 ;clear file
+    clrf        0x19
+    clrw
+
     movlw       0xFF
-    movwf       0x11
+    movwf       0x18
 
-    call        outer_loop
-
-    ; code gets stuck in loop and does not return, why?
-
-
+    movlw       0x1E ;21
+    movwf       0x19
+    goto        delay_loop
+delay_loop:
+    decfsz      0x18, 1     ; 255
+    goto        delay_loop
+    decfsz      0x1F, 1     ; 1
+    goto        delay_loop
     bsf         GPIO, 1
-
-    movlw       0xFF
-    movwf       0x10
-    movlw       0xFF
-    movwf       0x11
-
-    call        outer_loop
-
-    goto        main_loop
-
-
-outer_loop:
-    call        inner_loop
-
-    decfsz      0x10, 1
-    goto        outer_loop
-    retlw       0
-
-inner_loop:
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-
-    decfsz      0x11, 1
-    goto        inner_loop
-
-    movlw       0xFF    ;refill value
-    movwf       0x11
-
-    retlw       0
-
-loop_end:
-    nop
+    goto        delay_loop
 
 
 ; delay:
