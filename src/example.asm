@@ -39,46 +39,50 @@ main:
     ;;; change from 0b111000 > 0b00000000 (weak pull up is always on so pulling low will enable?).
     movlw       0b01000000 ; 0, 1, and 2 are outputs
     tris        GPIO
-
-
     goto        main_loop
 
 
     ; general purpose registers 0x10 - 0x1Fh
 
 main_loop:
-    bcf         GPIO, 1
-
-    movlw       0xFF   ;255
-    movwf       0x10   ;load value into general purpose register (RAM)
-    movlw       0xFF
-    movwf       0x11
-
-    call        outer_loop
-
-    ; code gets stuck in loop and does not return, why?
-
-
-    bsf         GPIO, 1
-
-    movlw       0xFF
-    movwf       0x10
-    movlw       0xFF
-    movwf       0x11
-
-    call        outer_loop
-
+    goto        outer_loop_setup_a
     goto        main_loop
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-outer_loop:
-    call        inner_loop
+outer_loop_setup_a:
+    bsf         GPIO, 1
 
-    decfsz      0x10, 1
-    goto        outer_loop
-    retlw       0
+    clrf        0x13
+    clrf        0x11
+    clrf        0x12
 
-inner_loop:
+    movlw       0xFF
+    movwf       0x13
+    movlw       0xFF
+    movwf       0x11
+    movlw       0x02   ; runs once
+    movwf       0x12
+
+    goto        outer_loop_a
+
+outer_loop_a:
+    decfsz      0x12, 1
+    goto        inner_loop_a
+
+    movlw       0xFF
+    movwf       0x11
+    movlw       0x02
+    movwf       0x12
+
+    decfsz      0x13, 1
+    goto        outer_loop_a
+
+    bcf         GPIO, 1
+
+    goto        outer_loop_setup_b
+
+inner_loop_a:
     nop
     nop
     nop
@@ -91,15 +95,67 @@ inner_loop:
     nop
 
     decfsz      0x11, 1
-    goto        inner_loop
+    goto        inner_loop_a
+    goto        loop_end_a
 
-    movlw       0xFF    ;refill value
+loop_end_a:
+    ; movlw       0x01 ;flag to exit loop, decrease it once
+    ; movwf       0x12
+    goto        outer_loop_a
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+outer_loop_setup_b:
+    bcf         GPIO, 1
+
+    clrf        0x13
+    clrf        0x11
+    clrf        0x12
+
+
+    movlw       0xFF
+    movwf       0x13
+    movlw       0xFF
     movwf       0x11
+    movlw       0x02
+    movwf       0x12
 
-    retlw       0
+    goto        outer_loop_b
 
-loop_end:
+outer_loop_b:
+    decfsz      0x12, 1
+    goto        inner_loop_b
+
+    movlw       0xFF
+    movwf       0x11
+    movlw       0x02
+    movwf       0x12
+
+    decfsz      0x13, 1
+    goto        outer_loop_b
+    goto        outer_loop_setup_a
+
+inner_loop_b:
     nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
+    decfsz      0x11, 1
+    goto        inner_loop_b
+    goto        loop_end_b
+
+loop_end_b:
+    ; movlw       0x01 ;flag to exit loop, decrease it once
+    ; movwf       0x12
+    goto        outer_loop_b
+
 
 
 ; delay:

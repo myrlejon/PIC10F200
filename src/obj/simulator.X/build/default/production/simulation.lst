@@ -1,243 +1,123 @@
 
 
 Microchip MPLAB XC8 Assembler V2.50 build 20240725155939 
-                                                                                                           Tue Jan 21 12:27:02 2025
+                                                                                                           Sat Jan 25 17:33:09 2025
 
 
      1                           	processor	10F200
      2                           	pagewidth 132
-     3                           	psect	udata,global,class=RAM,space=1,delta=1,noexec
-     4                           	psect	udata_bank0,global,class=BANK0,space=1,delta=1,noexec
-     5                           	psect	code,global,class=CODE,space=0,delta=2
-     6                           	psect	data,global,class=STRCODE,space=0,delta=2,noexec
-     7                           	psect	rstVector,global,space=0,delta=2
-     8                           	psect	config,global,abs,ovrld,class=CONFIG,space=4,delta=2,noexec
-     9                           
-    10                           ; CONFIG
-    11 ;;; - triple ;;; = my own comments
-    12 ;;;;;;;;;;;;;;;
-    13                           ; inc files:
-    14                           ; C:\Program Files\Microchip\xc8\v2.32\pic\include
-    15  0000                     INDF            equ	0
-    16  0000                     INDF_INDF_POSN  equ	0
-    17  0000                     INDF_INDF_POSITION equ	0
-    18  0008                     INDF_INDF_SIZE  equ	8
-    19  0008                     INDF_INDF_LENGTH equ	8
-    20  00FF                     INDF_INDF_MASK  equ	255
-    21  0001                     TMR0            equ	1
-    22  0000                     TMR0_TMR0_POSN  equ	0
-    23  0000                     TMR0_TMR0_POSITION equ	0
-    24  0008                     TMR0_TMR0_SIZE  equ	8
-    25  0008                     TMR0_TMR0_LENGTH equ	8
-    26  00FF                     TMR0_TMR0_MASK  equ	255
-    27  0002                     PCL             equ	2
-    28  0000                     PCL_PCL_POSN    equ	0
-    29  0000                     PCL_PCL_POSITION equ	0
-    30  0008                     PCL_PCL_SIZE    equ	8
-    31  0008                     PCL_PCL_LENGTH  equ	8
-    32  00FF                     PCL_PCL_MASK    equ	255
-    33  0003                     STATUS          equ	3
-    34  0000                     STATUS_C_POSN   equ	0
-    35  0000                     STATUS_C_POSITION equ	0
-    36  0001                     STATUS_C_SIZE   equ	1
-    37  0001                     STATUS_C_LENGTH equ	1
-    38  0001                     STATUS_C_MASK   equ	1
-    39  0001                     STATUS_DC_POSN  equ	1
-    40  0001                     STATUS_DC_POSITION equ	1
-    41  0001                     STATUS_DC_SIZE  equ	1
-    42  0001                     STATUS_DC_LENGTH equ	1
-    43  0002                     STATUS_DC_MASK  equ	2
-    44  0002                     STATUS_Z_POSN   equ	2
-    45  0002                     STATUS_Z_POSITION equ	2
-    46  0001                     STATUS_Z_SIZE   equ	1
-    47  0001                     STATUS_Z_LENGTH equ	1
-    48  0004                     STATUS_Z_MASK   equ	4
-    49  0003                     STATUS_nPD_POSN equ	3
-    50  0003                     STATUS_nPD_POSITION equ	3
-    51  0001                     STATUS_nPD_SIZE equ	1
-    52  0001                     STATUS_nPD_LENGTH equ	1
-    53  0008                     STATUS_nPD_MASK equ	8
-    54  0004                     STATUS_nTO_POSN equ	4
-    55  0004                     STATUS_nTO_POSITION equ	4
-    56  0001                     STATUS_nTO_SIZE equ	1
-    57  0001                     STATUS_nTO_LENGTH equ	1
-    58  0010                     STATUS_nTO_MASK equ	16
-    59  0007                     STATUS_GPWUF_POSN equ	7
-    60  0007                     STATUS_GPWUF_POSITION equ	7
-    61  0001                     STATUS_GPWUF_SIZE equ	1
-    62  0001                     STATUS_GPWUF_LENGTH equ	1
-    63  0080                     STATUS_GPWUF_MASK equ	128
-    64  0000                     STATUS_CARRY_POSN equ	0
-    65  0000                     STATUS_CARRY_POSITION equ	0
-    66  0001                     STATUS_CARRY_SIZE equ	1
-    67  0001                     STATUS_CARRY_LENGTH equ	1
-    68  0001                     STATUS_CARRY_MASK equ	1
-    69  0002                     STATUS_ZERO_POSN equ	2
-    70  0002                     STATUS_ZERO_POSITION equ	2
-    71  0001                     STATUS_ZERO_SIZE equ	1
-    72  0001                     STATUS_ZERO_LENGTH equ	1
-    73  0004                     STATUS_ZERO_MASK equ	4
-    74  0004                     FSR             equ	4
-    75  0000                     FSR_FSR_POSN    equ	0
-    76  0000                     FSR_FSR_POSITION equ	0
-    77  0008                     FSR_FSR_SIZE    equ	8
-    78  0008                     FSR_FSR_LENGTH  equ	8
-    79  00FF                     FSR_FSR_MASK    equ	255
-    80  0005                     OSCCAL          equ	5
-    81  0000                     OSCCAL_FOSC4_POSN equ	0
-    82  0000                     OSCCAL_FOSC4_POSITION equ	0
-    83  0001                     OSCCAL_FOSC4_SIZE equ	1
-    84  0001                     OSCCAL_FOSC4_LENGTH equ	1
-    85  0001                     OSCCAL_FOSC4_MASK equ	1
-    86  0001                     OSCCAL_CAL_POSN equ	1
-    87  0001                     OSCCAL_CAL_POSITION equ	1
-    88  0007                     OSCCAL_CAL_SIZE equ	7
-    89  0007                     OSCCAL_CAL_LENGTH equ	7
-    90  00FE                     OSCCAL_CAL_MASK equ	254
-    91  0001                     OSCCAL_CAL0_POSN equ	1
-    92  0001                     OSCCAL_CAL0_POSITION equ	1
-    93  0001                     OSCCAL_CAL0_SIZE equ	1
-    94  0001                     OSCCAL_CAL0_LENGTH equ	1
-    95  0002                     OSCCAL_CAL0_MASK equ	2
-    96  0002                     OSCCAL_CAL1_POSN equ	2
-    97  0002                     OSCCAL_CAL1_POSITION equ	2
-    98  0001                     OSCCAL_CAL1_SIZE equ	1
-    99  0001                     OSCCAL_CAL1_LENGTH equ	1
-   100  0004                     OSCCAL_CAL1_MASK equ	4
-   101  0003                     OSCCAL_CAL2_POSN equ	3
-   102  0003                     OSCCAL_CAL2_POSITION equ	3
-   103  0001                     OSCCAL_CAL2_SIZE equ	1
-   104  0001                     OSCCAL_CAL2_LENGTH equ	1
-   105  0008                     OSCCAL_CAL2_MASK equ	8
-   106  0004                     OSCCAL_CAL3_POSN equ	4
-   107  0004                     OSCCAL_CAL3_POSITION equ	4
-   108  0001                     OSCCAL_CAL3_SIZE equ	1
-   109  0001                     OSCCAL_CAL3_LENGTH equ	1
-   110  0010                     OSCCAL_CAL3_MASK equ	16
-   111  0005                     OSCCAL_CAL4_POSN equ	5
-   112  0005                     OSCCAL_CAL4_POSITION equ	5
-   113  0001                     OSCCAL_CAL4_SIZE equ	1
-   114  0001                     OSCCAL_CAL4_LENGTH equ	1
-   115  0020                     OSCCAL_CAL4_MASK equ	32
-   116  0006                     OSCCAL_CAL5_POSN equ	6
-   117  0006                     OSCCAL_CAL5_POSITION equ	6
-   118  0001                     OSCCAL_CAL5_SIZE equ	1
-   119  0001                     OSCCAL_CAL5_LENGTH equ	1
-   120  0040                     OSCCAL_CAL5_MASK equ	64
-   121  0007                     OSCCAL_CAL6_POSN equ	7
-   122  0007                     OSCCAL_CAL6_POSITION equ	7
-   123  0001                     OSCCAL_CAL6_SIZE equ	1
-   124  0001                     OSCCAL_CAL6_LENGTH equ	1
-   125  0080                     OSCCAL_CAL6_MASK equ	128
-   126  0006                     GPIO            equ	6
-   127  0000                     GPIO_GP0_POSN   equ	0
-   128  0000                     GPIO_GP0_POSITION equ	0
-   129  0001                     GPIO_GP0_SIZE   equ	1
-   130  0001                     GPIO_GP0_LENGTH equ	1
-   131  0001                     GPIO_GP0_MASK   equ	1
-   132  0001                     GPIO_GP1_POSN   equ	1
-   133  0001                     GPIO_GP1_POSITION equ	1
-   134  0001                     GPIO_GP1_SIZE   equ	1
-   135  0001                     GPIO_GP1_LENGTH equ	1
-   136  0002                     GPIO_GP1_MASK   equ	2
-   137  0002                     GPIO_GP2_POSN   equ	2
-   138  0002                     GPIO_GP2_POSITION equ	2
-   139  0001                     GPIO_GP2_SIZE   equ	1
-   140  0001                     GPIO_GP2_LENGTH equ	1
-   141  0004                     GPIO_GP2_MASK   equ	4
-   142  0003                     GPIO_GP3_POSN   equ	3
-   143  0003                     GPIO_GP3_POSITION equ	3
-   144  0001                     GPIO_GP3_SIZE   equ	1
-   145  0001                     GPIO_GP3_LENGTH equ	1
-   146  0008                     GPIO_GP3_MASK   equ	8
-   147                           
-   148                           	psect	code
-   149  0000'                    main:
-   150                           
-   151 ;;; Timer0 Clock Source Select (page 16) bit gets cleared in OPTION_REG (page 23)
-   152                           ; clear T0CS bit of OPTION reg to enable it as a GPIO
-   153  0000' 0CD1               	movlw	209
-   154                           
-   155 ;;; load option register (page 46)
-   156  0001' 0002               	option
-   157                           
-   158                           ; init gpio
-   159 ;;; (page 33 in PIC12F683) indicates that GPIO is an 6-bit wide, bidirectional port.
-   160 ;;; (page 20 in PIC10F200) indicates that GPIO is an 8-bit I/O register where only the lower 4 bits are used.
-   161 ;;; change from 0b111000 > 0b00000000 (weak pull up is always on so pulling low will enable?).
-   162  0002' 0C40               	movlw	64	; 0, 1, and 2 are outputs
-   163  0003' 0006               	tris	6
-   164  0004' 0A05'              	goto	main_loop
-   165  0005'                    main_loop:	
-   166                           ; general purpose registers 0x10 - 0x1Fh
-   167                           
-   168  0005' 0526               	bsf	6,1
-   169  0006' 0CFF               	movlw	255	;255
-   170  0007' 0030               	movwf	16	;load value into general purpose register (RAM)
-   171  0008' 0CFF               	movlw	255
-   172  0009' 0031               	movwf	17
-   173  000A' 0912'              	call	outer_loop
-   174  000B' 0426               	bcf	6,1
-   175  000C' 0CFF               	movlw	255
-   176  000D' 0030               	movwf	16
-   177  000E' 0CFF               	movlw	255
-   178  000F' 0031               	movwf	17
-   179  0010' 0912'              	call	outer_loop
-   180  0011' 0A05'              	goto	main_loop
-   181  0012'                    outer_loop:
-   182  0012' 0916'              	call	inner_loop
-   183  0013' 02F0               	decfsz	16,f
-   184  0014' 0A12'              	goto	outer_loop
-   185  0015' 0800               	retlw	0
-   186  0016'                    inner_loop:
-   187  0016' 02F1               	decfsz	17,f
-   188  0017' 0A16'              	goto	inner_loop
-   189  0018' 0800               	retlw	0
-   190                           
-   191                           	psect	data
-   192  0000                     stk_offset      set	0
-   193  0000                     auto_size       set	0
-   194                           
-   195                           ; stack_auto defines a symbol /name/_offset which equates to the
-   196                           ; stack offset of the auto object in question
-   197  0000'                    
-   198                           ; stack_param defines a symbol /name/_offset which equates to the
-   199                           ; stack offset of the parameter object in question
-   200  0000'                    
-   201                           ; alloc_stack adjusts the SP to allocate space for auto objects
-   202                           ; it also links in to the btemp symbol so that can be used
-   203  0000'                    
-   204                           ; restore_stack adjusts the SP to remove all auto and parameter
-   205                           ; objects from the stack prior to returning from a function
-   206  0000'                    	; ((GPIO) and 01Fh), 3/MCLR Pin Function Select bit (((GPIO) and 01Fh), 3/MCLR pin function is MCLR
-      +                          )
-   207                           
-   208                           	psect	rstVector
-   209  0000'                    reset_vector:	
-   210                           ; CONFIG WDT = OFF ; Watchdog Timer Enable bit (WDT disabled)
-   211                           ; User guide chapter 4.2: delta means 2 bytes per memory address (14 bit opcodes for PIC12F683)
-   212                           ; this psect just holds the reset vector
-   213 ;;; PIC10F200 has 12 bit opcodes, should still be 2 bytes per memory address
-   214                           
-   215  0000' 0A00'              	goto	main
-   216                           
-   217                           	psect	config
-   218                           
-   219                           ;Config register CONFIG @ 0xFFF
-   220                           ;	Oscillator
-   221                           ;	OSC = IntRC, This is the only option. It is here for backward compatibility
-   222                           ;	Watchdog Timer
-   223                           ;	WDTE = 0x1, unprogrammed default
-   224                           ;	Code Protect
-   225                           ;	CP = OFF, Code protection off
-   226                           ;	Master Clear Enable
-   227                           ;	MCLRE = OFF, GP3/MCLR pin fuction is digital I/O, MCLR internally tied to VDD
-   228  0FFF                     	org	4095
-   229  0FFF  0FEF               	dw	4079
+     3  0000                     main:
+     4                           
+     5 ;;; Timer0 Clock Source Select (page 16) bit gets cleared in OPTION_REG (page 23)
+     6                           ; clear T0CS bit of OPTION reg to enable it as a GPIO
+     7  0000  CD1                	movlw	209
+     8                           
+     9 ;;; load option register (page 46)
+    10  0001  002                	option
+    11                           
+    12                           ; init gpio
+    13 ;;; (page 33 in PIC12F683) indicates that GPIO is an 6-bit wide, bidirectional port.
+    14 ;;; (page 20 in PIC10F200) indicates that GPIO is an 8-bit I/O register where only the lower 4 bits are used.
+    15 ;;; change from 0b111000 > 0b00000000 (weak pull up is always on so pulling low will enable?).
+    16  0002  C40                	movlw	64	; 0, 1, and 2 are outputs
+    17  0003  000'               	tris	GPIO
+    18  0004  A05                	goto	main_loop
+    19  0005                     main_loop:	
+    20                           ; general purpose registers 0x10 - 0x1Fh
+    21                           
+    22  0005  A07                	goto	outer_loop_setup_a
+    23  0006  A05                	goto	main_loop
+    24  0007                     outer_loop_setup_a:	
+    25 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    26                           
+    27  0007  420'               	bcf	GPIO,1
+    28  0008  070                	clrf	16
+    29  0009  071                	clrf	17
+    30  000A  072                	clrf	18
+    31  000B  CFF                	movlw	255
+    32  000C  030                	movwf	16
+    33  000D  CFF                	movlw	255
+    34  000E  031                	movwf	17
+    35  000F  C02                	movlw	2	; runs once
+    36  0010  032                	movwf	18
+    37  0011  A12                	goto	outer_loop_a
+    38  0012                     outer_loop_a:
+    39  0012  2F2                	decfsz	18,f
+    40  0013  A1B                	goto	inner_loop_a
+    41  0014  CFF                	movlw	255
+    42  0015  031                	movwf	17
+    43  0016  C02                	movlw	2
+    44  0017  032                	movwf	18
+    45  0018  2F0                	decfsz	16,f
+    46  0019  A12                	goto	outer_loop_a
+    47  001A  A29                	goto	outer_loop_setup_b
+    48  001B                     inner_loop_a:
+    49  001B  000                	nop
+    50  001C  000                	nop
+    51  001D  000                	nop
+    52  001E  000                	nop
+    53  001F  000                	nop
+    54  0020  000                	nop
+    55  0021  000                	nop
+    56  0022  000                	nop
+    57  0023  000                	nop
+    58  0024  000                	nop
+    59  0025  2F1                	decfsz	17,f
+    60  0026  A1B                	goto	inner_loop_a
+    61  0027  A28                	goto	loop_end_a
+    62  0028                     loop_end_a:
+    63                           
+    64                           ; movlw 0x01 ;flag to exit loop, decrease it once
+    65                           ; movwf 0x12
+    66  0028  A12                	goto	outer_loop_a
+    67  0029                     outer_loop_setup_b:	
+    68 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    69                           
+    70  0029  520'               	bsf	GPIO,1
+    71  002A  070                	clrf	16
+    72  002B  071                	clrf	17
+    73  002C  072                	clrf	18
+    74  002D  CFF                	movlw	255
+    75  002E  030                	movwf	16
+    76  002F  CFF                	movlw	255
+    77  0030  031                	movwf	17
+    78  0031  C02                	movlw	2
+    79  0032  032                	movwf	18
+    80  0033  A34                	goto	outer_loop_b
+    81  0034                     outer_loop_b:
+    82  0034  2F2                	decfsz	18,f
+    83  0035  A3D                	goto	inner_loop_b
+    84  0036  CFF                	movlw	255
+    85  0037  031                	movwf	17
+    86  0038  C02                	movlw	2
+    87  0039  032                	movwf	18
+    88  003A  2F0                	decfsz	16,f
+    89  003B  A34                	goto	outer_loop_b
+    90  003C  A07                	goto	outer_loop_setup_a
+    91  003D                     inner_loop_b:
+    92  003D  000                	nop
+    93  003E  000                	nop
+    94  003F  000                	nop
+    95  0040  000                	nop
+    96  0041  000                	nop
+    97  0042  000                	nop
+    98  0043  000                	nop
+    99  0044  000                	nop
+   100  0045  000                	nop
+   101  0046  000                	nop
+   102  0047  2F1                	decfsz	17,f
+   103  0048  A3D                	goto	inner_loop_b
+   104  0049  A4A                	goto	loop_end_b
+   105  004A                     loop_end_b:
+   106                           
+   107                           ; movlw 0x01 ;flag to exit loop, decrease it once
+   108                           ; movwf 0x12
+   109  004A  A34                	goto	outer_loop_b
 
 
 Microchip Technology PIC Macro Assembler V2.50 build 20240725155939 
-Symbol Table                                                                                               Tue Jan 21 12:27:02 2025
+Symbol Table                                                                                               Sat Jan 25 17:33:09 2025
 
-                 GPIO 0006                   main 0000           reset_vector 0000             inner_loop 0016  
-            main_loop 0005             outer_loop 0012  
+              GPIO 0000*               main 0000        inner_loop_a 001B        inner_loop_b 003D        outer_loop_a 0012  
+      outer_loop_b 0034  outer_loop_setup_a 0007  outer_loop_setup_b 0029          loop_end_a 0028          loop_end_b 004A  
+         main_loop 0005  

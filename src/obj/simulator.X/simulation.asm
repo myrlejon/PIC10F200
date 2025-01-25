@@ -1,30 +1,3 @@
-processor 10F200
-
-; CONFIG
-
-;;; - triple ;;; = my own comments
-
-;;;;;;;;;;;;;;;
-
-; inc files:
-; C:\Program Files\Microchip\xc8\v2.32\pic\include
-
-#include <xc.inc>
-
-CONFIG  OSC = IntRC           ; Oscillator Selection bits (internal RC oscillator)
-; CONFIG  WDT = OFF             ; Watchdog Timer Enable bit (WDT disabled)
-CONFIG  CP = OFF              ; Code Protection bit (Code protection off)
-CONFIG  MCLRE = OFF           ; GP3/MCLR Pin Function Select bit (GP3/MCLR pin function is MCLR)
-
-; User guide chapter 4.2: delta means 2 bytes per memory address (14 bit opcodes for PIC12F683)
-; this psect just holds the reset vector
-;;; PIC10F200 has 12 bit opcodes, should still be 2 bytes per memory address
-
-psect rstVector, delta=2
-reset_vector:
-    goto main
-
-psect code, delta=2
 main:
     ;;; Timer0 Clock Source Select (page 16) bit gets cleared in OPTION_REG (page 23)
     ; clear T0CS bit of OPTION reg to enable it as a GPIO
@@ -39,68 +12,117 @@ main:
     tris        GPIO
     goto        main_loop
 
+
     ; general purpose registers 0x10 - 0x1Fh
 
 main_loop:
-    bsf         GPIO, 1
+    goto        outer_loop_setup_a
+    goto        main_loop
 
-    movlw       0xFF   ;255
-    movwf       0x10   ;load value into general purpose register (RAM)
-    movlw       0xFF
-    movwf       0x11
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    call        outer_loop
-
+outer_loop_setup_a:
     bcf         GPIO, 1
+
+    clrf        0x10
+    clrf        0x11
+    clrf        0x12
 
     movlw       0xFF
     movwf       0x10
     movlw       0xFF
     movwf       0x11
+    movlw       0x02   ; runs once
+    movwf       0x12
 
-    call        outer_loop
+    goto        outer_loop_a
 
-    goto        main_loop
+outer_loop_a:
+    decfsz      0x12, 1
+    goto        inner_loop_a
 
+    movlw       0xFF
+    movwf       0x11
+    movlw       0x02
+    movwf       0x12
 
-outer_loop:
-    call        inner_loop
     decfsz      0x10, 1
-    goto        outer_loop
-    retlw       0
+    goto        outer_loop_a
+    goto        outer_loop_setup_b
+    
 
-inner_loop:
+
+inner_loop_a:
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
     decfsz      0x11, 1
-    goto        inner_loop
-    retlw       0
+    goto        inner_loop_a
+    goto        loop_end_a
+
+loop_end_a:
+    ; movlw       0x01 ;flag to exit loop, decrease it once
+    ; movwf       0x12
+    goto        outer_loop_a
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+outer_loop_setup_b:
+    bsf         GPIO, 1
+
+    clrf        0x10
+    clrf        0x11
+    clrf        0x12
 
 
-; delay:
-;     movlw       0xFF   ;255
-;     movwf       0x10   ;load value into general purpose register (RAM)
-;     movlw       0xFF
-;     movwf       0x11
+    movlw       0xFF
+    movwf       0x10
+    movlw       0xFF
+    movwf       0x11
+    movlw       0x02
+    movwf       0x12
 
-;     call        outer_loop
-;     retlw       0
+    goto        outer_loop_b
 
-; delay:
-;     nop
-;     nop
-;     nop
-;     nop
-;     nop
-;     nop
-;     nop
-;     retlw       0
+outer_loop_b:
+    decfsz      0x12, 1
+    goto        inner_loop_b
 
-; TODO - make a loop that does the following -
-; MOVLW - move literal to W - for example this could be 100
-; MOVWF - move W to f - in this case it will be put in general RAM register
-; DECFSZ - decrement, skip if 0 - once it hits 0 then it should have a GOTO to delay_end
-; GOTO delay_end:
+    movlw       0xFF
+    movwf       0x11
+    movlw       0x02
+    movwf       0x12
 
-; need to specify END directive to fix warning: "warning: (528) no start record; entry point defaults to zero"
-end reset_vector
+    decfsz      0x10, 1
+    goto        outer_loop_b
 
+    goto        outer_loop_setup_a
 
+inner_loop_b:
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+
+    decfsz      0x11, 1
+    goto        inner_loop_b
+    goto        loop_end_b
+
+loop_end_b:
+    ; movlw       0x01 ;flag to exit loop, decrease it once
+    ; movwf       0x12
+    goto        outer_loop_b
