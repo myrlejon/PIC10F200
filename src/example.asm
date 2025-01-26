@@ -48,6 +48,7 @@ main:
 main_loop:
     bcf         GPIO, 1
     call        delay
+    call        delay
     bsf         GPIO, 1
     call        delay
     goto        main_loop
@@ -56,6 +57,7 @@ main_loop:
 delay:
     decfsz      0x10, 1
     goto        delay
+    clrwdt
     decfsz      0x11, 1
     goto        delay
     retlw       0
