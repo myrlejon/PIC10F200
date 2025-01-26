@@ -47,30 +47,18 @@ main:
 
 main_loop:
     bcf         GPIO, 1
-    goto        delay
-    ; bsf         GPIO, 1
-    ; call        delay
-    ; goto        main_loop
+    call        delay
+    bsf         GPIO, 1
+    call        delay
+    goto        main_loop
 
 
 delay:
-    clrf        0x18 ;clear file
-    clrf        0x19
-    clrw
-
-    movlw       0xFF
-    movwf       0x18
-
-    movlw       0x1E ;21
-    movwf       0x19
-    goto        delay_loop
-delay_loop:
-    decfsz      0x18, 1     ; 255
-    goto        delay_loop
-    decfsz      0x1F, 1     ; 1
-    goto        delay_loop
-    bsf         GPIO, 1
-    goto        delay_loop
+    decfsz      0x10, 1
+    goto        delay
+    decfsz      0x11, 1
+    goto        delay
+    retlw       0
 
 
 ; delay:
