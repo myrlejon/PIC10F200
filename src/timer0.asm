@@ -5,11 +5,11 @@ processor 10F200
 
 ; workflow - 
 
-; step 1 -
+; step 1 - [x]
 ; read input from button
 ; if reading from button is high, set GPIO high
 
-; step 2 -
+; step 2 - [x]
 ; read input from button
 ; if reading is high for one second, set GPIO high
 
@@ -40,7 +40,6 @@ main:
     goto        main_loop
 
 main_loop:
-    clrwdt
     goto        read_gp0
     goto        main_loop
 
@@ -49,30 +48,36 @@ read_gp0:
     goto        button_pressed
     goto        main_loop
 
-button_pressed:
-    btfsc       GPIO, 1
-    goto        clear_gp0
+; button_release:
+;     btfss       GPIO, 0
 
+
+button_pressed:
+    ; btfss       GPIO, 0
+    ; goto        button_pressed
     call        delay
     call        delay
+
+    btfsc       GPIO, 1
+    call        clear_gp1
+
     call        delay
     
     btfss       GPIO, 1
-    goto        set_gp0
+    call        set_gp1
 
     call        delay
-    call        delay
-    call        delay
+    nop
 
     goto        main_loop
 
-set_gp0:
+set_gp1:
     bsf         GPIO, 1
-    goto        main_loop
+    retlw       0
 
-clear_gp0:
+clear_gp1:
     bcf         GPIO, 1
-    goto        main_loop
+    retlw       0
 
 delay:
     decfsz      0x10, 1
