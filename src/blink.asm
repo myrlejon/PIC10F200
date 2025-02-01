@@ -1,7 +1,5 @@
 processor 10F200
 
-; CONFIG
-
 ; inc files:
 ; C:\Program Files\Microchip\xc8\v2.32\pic\include
 

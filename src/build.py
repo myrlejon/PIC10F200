@@ -20,7 +20,7 @@ def main():
     # ./main.asm                which file to compile
 
  
-    for target in ["main"]:
+    for target in ["timer0"]:
         file = f"./{target}.asm"
         args = " ".join([
             "-mcpu=10F200",
