@@ -12,6 +12,7 @@ processor 10F200
 ; step 2 - [x]
 ; read input from button
 ; if reading is high for one second, set GPIO high
+; pressing the button again quickly should turn it off
 
 ; GP0 = button
 ; GP1 = LED
@@ -32,7 +33,7 @@ reset_vector:
 
 psect code, delta=2
 main:
-    movlw       0b00010001
+    movlw       0b11010001
     option      
     movlw       0b01000000
     tris        GPIO
@@ -40,44 +41,36 @@ main:
     goto        main_loop
 
 main_loop:
-    goto        read_gp0
-    goto        main_loop
-
-read_gp0:
+    bcf         GPIO, 0
+    call        delay
     btfsc       GPIO, 0     ; check if button is pressed down
     goto        button_pressed
     goto        main_loop
 
-; button_release:
-;     btfss       GPIO, 0
-
-
 button_pressed:
-    ; btfss       GPIO, 0
-    ; goto        button_pressed
+    call        delay
+    btfsc       GPIO, 1 ;check if LED is high, if it is, then clear it.
+    goto        clear_gp1
+
     call        delay
     call        delay
-
-    btfsc       GPIO, 1
-    call        clear_gp1
-
+    call        delay
+    call        delay
+    call        delay
     call        delay
     
-    btfss       GPIO, 1
-    call        set_gp1
-
-    call        delay
-    nop
+    btfsc       GPIO, 0 ;check if still pressed down
+    goto        set_gp1
 
     goto        main_loop
 
 set_gp1:
     bsf         GPIO, 1
-    retlw       0
+    goto        main_loop
 
 clear_gp1:
     bcf         GPIO, 1
-    retlw       0
+    goto        main_loop
 
 delay:
     decfsz      0x10, 1
