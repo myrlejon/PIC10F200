@@ -33,7 +33,7 @@ reset_vector:
 
 psect code, delta=2
 main:
-    movlw       0b11010001
+    movlw       0b11010111 ; (bit 0-2) prescaler changed from 1:4 (001) > 1:256 (111) 
     option      
     movlw       0b01000000
     tris        GPIO
@@ -48,29 +48,44 @@ main_loop:
     goto        main_loop
 
 button_pressed:
-    call        delay
+    ; call        delay
     btfsc       GPIO, 1 ;check if LED is high, if it is, then clear it.
-    goto        clear_gp1
+    call        clear_gp1
 
-    call        delay
-    call        delay
-    call        delay
-    call        delay
-    call        delay
-    call        delay
+    clrf        TMR0 ; clear timer to start counting from 0
+    call        delay_timer0
+    call        delay_timer0
+    call        delay_timer0
+    call        delay_timer0
+    call        delay_timer0
+
+    ; call        delay
+    ; call        delay
+    ; call        delay
+    ; call        delay
+    ; call        delay
+    ; call        delay
     
     btfsc       GPIO, 0 ;check if still pressed down
-    goto        set_gp1
+    call        set_gp1
 
+    goto        button_release
     goto        main_loop
+
+button_release:
+    clrwdt
+    btfss       GPIO, 0
+    goto        button_release
+    goto        main_loop
+
 
 set_gp1:
     bsf         GPIO, 1
-    goto        main_loop
+    retlw       0
 
 clear_gp1:
     bcf         GPIO, 1
-    goto        main_loop
+    retlw       0
 
 delay:
     decfsz      0x10, 1
@@ -79,6 +94,14 @@ delay:
     decfsz      0x11, 1
     goto        delay
     retlw       0
+
+delay_timer0:
+    clrwdt
+    btfss       TMR0, 7 ; test highest bit in TMR0
+    goto        delay_timer0
+    bsf         GPIO, 1
+    retlw       0
+    
 
 ; button_pressed:
 ;     ; movwf       GPIO
