@@ -41,11 +41,21 @@ main:
     goto        main_loop
 
 main_loop:
-    bcf         GPIO, 0
-    call        delay
-    btfsc       GPIO, 0     ; check if button is pressed down
-    goto        button_pressed
+    call        clear_gp1
+    clrf        TMR0
+    clrwdt
+    call        delay_timer0
+    call        set_gp1
+    clrf        TMR0
+    clrwdt
+    call        delay_timer0
     goto        main_loop
+
+    ; bcf         GPIO, 0
+    ; call        delay
+    ; btfsc       GPIO, 0     ; check if button is pressed down
+    ; goto        button_pressed
+    ; goto        main_loop
 
 button_pressed:
     ; call        delay
@@ -54,10 +64,7 @@ button_pressed:
 
     clrf        TMR0 ; clear timer to start counting from 0
     call        delay_timer0
-    call        delay_timer0
-    call        delay_timer0
-    call        delay_timer0
-    call        delay_timer0
+
 
     ; call        delay
     ; call        delay
@@ -95,12 +102,17 @@ delay:
     goto        delay
     retlw       0
 
+
+delay_timer0_start:
+    clrf        TMR0
 delay_timer0:
+    movlw       0xFF
+    subwf       TMR0, W
     clrwdt
-    btfss       TMR0, 7 ; test highest bit in TMR0
+    btfss       STATUS, 2
     goto        delay_timer0
-    bsf         GPIO, 1
     retlw       0
+
     
 
 ; button_pressed:
