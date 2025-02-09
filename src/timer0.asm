@@ -33,7 +33,7 @@ reset_vector:
 
 psect code, delta=2
 main:
-    movlw       0b11010111 ; (bit 0-2) prescaler changed from 1:4 (001) > 1:256 (111) 
+    movlw       0b11010000 ; (bit 0-2) prescaler changed from 1:4 (001) > 1:256 (111) 
     option      
     movlw       0b01000000
     tris        GPIO
@@ -42,13 +42,9 @@ main:
 
 main_loop:
     call        clear_gp1
-    clrf        TMR0
-    clrwdt
-    call        delay_timer0
+    call        delay_timer0_start
     call        set_gp1
-    clrf        TMR0
-    clrwdt
-    call        delay_timer0
+    call        delay_timer0_start
     goto        main_loop
 
     ; bcf         GPIO, 0
@@ -104,12 +100,18 @@ delay:
 
 
 delay_timer0_start:
+    ; clrf        0x1E
+    ; movlw       0x01
+    ; movwf       0x1E
     clrf        TMR0
 delay_timer0:
+    clrwdt
     movlw       0xFF
     subwf       TMR0, W
     clrwdt
     btfss       STATUS, 2
+    goto        delay_timer0
+    decfsz      0x1E, 1
     goto        delay_timer0
     retlw       0
 
