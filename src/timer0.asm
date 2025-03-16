@@ -33,7 +33,7 @@ reset_vector:
 
 psect code, delta=2
 main:
-    movlw       0b11010000 ; (bit 0-2) prescaler changed from 1:4 (001) > 1:256 (111) 
+    movlw       0b11010111 ; (bit 0-2) prescaler changed from 1:4 (001) > 1:256 (111) 
     option      
     movlw       0b01000000
     tris        GPIO
